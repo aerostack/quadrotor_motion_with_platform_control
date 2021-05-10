@@ -1,0 +1,20 @@
+<library path="lib/libquadrotor_motion_with_platform_control">
+    <class name="quadrotor_motion_with_platform_control/BehaviorRotateWithPlatformControl" type="quadrotor_motion_with_platform_control::BehaviorRotateWithPlatformControl"
+		base_class_type="nodelet::Nodelet">
+		<description>
+			BehaviorRotateWithPlatformControl.
+		</description>
+	</class>	
+	<class name="quadrotor_motion_with_platform_control/BehaviorMoveAtSpeedWithPlatformControl" type="quadrotor_motion_with_platform_control::BehaviorMoveAtSpeedWithPlatformControl"
+		base_class_type="nodelet::Nodelet">
+		<description>
+			BehaviorMoveAtSpeedWithPlatformControl.
+		</description>
+	</class>	
+	<class name="quadrotor_motion_with_platform_control/BehaviorMoveVerticalWithPlatformControl" type="quadrotor_motion_with_platform_control::BehaviorMoveVerticalWithPlatformControl"
+		base_class_type="nodelet::Nodelet">
+		<description>
+			BehaviorMoveVerticalWithPlatformControl.
+		</description>
+	</class>		
+</library>

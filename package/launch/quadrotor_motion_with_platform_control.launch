@@ -1,0 +1,38 @@
+<launch>
+    <arg name="namespace"                          default="drone1" />
+    <arg name="frecuency"                          default="100.0" />
+    <arg name="activate_behavior_srv"              default="activate_behavior" />
+    <arg name="deactivate_behavior_srv"            default="deactivate_behavior" />
+    <arg name="check_activation_conditions_srv"    default="check_activation_conditions" />
+    <arg name="activation_finished_topic"          default="behavior_activation_finished" />
+    <arg name="imu_topic"                          default="sensor_measurement/imu" />
+    <arg name="motion_reference_speed_topic"       default="motion_reference/speed" />
+    <arg name="motion_reference_pose_topic"        default="motion_reference/pose" />
+    <arg name="flight_action_topic"                default="actuator_command/flight_action" />
+    <arg name="behavior_system"                    default="quadrotor_motion_with_platform_control" />
+    <arg name="flight_state_topic"                 default="self_localization/flight_state" />
+    
+   <group ns="$(arg namespace)/$(arg behavior_system)">
+        <param name="~namespace"                           value="$(arg namespace)"                          type="str" />
+        <param name="~frecuency"                           value="$(arg frecuency)"                          type="double" />
+        <param name="~activate_behavior_srv"               value="$(arg activate_behavior_srv)"              type="str" />
+        <param name="~deactivate_behavior_srv"             value="$(arg deactivate_behavior_srv)"            type="str" />
+        <param name="~check_activation_conditions_srv"     value="$(arg check_activation_conditions_srv)"    type="str" />
+        <param name="~imu_topic"                           value="$(arg imu_topic)"                          type="str" />
+        <param name="~flight_action_topic"                 value="$(arg flight_action_topic)"                type="str" />
+        <param name="~behavior_system"                     value="$(arg behavior_system)"                    type="str" />
+        <param name="~activation_finished_topic"           value="$(arg activation_finished_topic)"          type="str" /> 
+        <param name="~motion_reference_speed_topic"        value="$(arg motion_reference_speed_topic)"       type="str" /> 
+        <param name="~motion_reference_pose_topic"         value="$(arg motion_reference_pose_topic)"        type="str" /> 
+        <param name="~flight_state_topic"                        value="$(arg flight_state_topic)"                       type="str" /> 
+            
+       <node pkg="nodelet" type="nodelet" args="manager" name="quadrotor_motion_with_platform_control_manager" output="screen" />
+       <node pkg="nodelet" type="nodelet" args="load quadrotor_motion_with_platform_control/BehaviorRotateWithPlatformControl quadrotor_motion_with_platform_control_manager"
+        name="behavior_rotate_with_platform_control" output="screen"/>       
+       <node pkg="nodelet" type="nodelet" args="load quadrotor_motion_with_platform_control/BehaviorMoveAtSpeedWithPlatformControl quadrotor_motion_with_platform_control_manager"
+        name="behavior_move_at_speed_with_platform_control" output="screen"/>   
+       <node pkg="nodelet" type="nodelet" args="load quadrotor_motion_with_platform_control/BehaviorMoveVerticalWithPlatformControl quadrotor_motion_with_platform_control_manager"
+        name="behavior_move_vertical_with_platform_control" output="screen"/>                
+  </group>
+</launch>
+
