@@ -30,9 +30,15 @@
 
 #include "../include/behavior_move_vertical_with_platform_control.h"
 
-namespace quadrotor_motion_with_platform_control
-{
-BehaviorMoveVerticalWithPlatformControl::BehaviorMoveVerticalWithPlatformControl() : BehaviorExecutionController() { 
+int main(int argc, char** argv){
+  ros::init(argc, argv, ros::this_node::getName());
+  std::cout << "Node: " << ros::this_node::getName() << " started" << std::endl;
+  BehaviorMoveVerticalWithPlatformControl behavior;
+  behavior.start();
+  return 0;
+}
+
+BehaviorMoveVerticalWithPlatformControl::BehaviorMoveVerticalWithPlatformControl() : BehaviorExecutionManager() { 
   setName("move_vertical_with_platform_control"); 
   setExecutionGoal(ExecutionGoals::ACHIEVE_GOAL); 
 }
@@ -68,12 +74,12 @@ void BehaviorMoveVerticalWithPlatformControl::checkGoal(){}
 
 void BehaviorMoveVerticalWithPlatformControl::checkProgress() {
   if (status_msg.state == aerostack_msgs::FlightState::LANDED){
-    BehaviorExecutionController::setTerminationCause(behavior_execution_manager_msgs::BehaviorActivationFinished::WRONG_PROGRESS);
+    BehaviorExecutionManager::setTerminationCause(behavior_execution_manager_msgs::BehaviorActivationFinished::WRONG_PROGRESS);
   }
 
   ros::Duration diff = ros::Time::now() - action_time;
   if (status_msg.state == aerostack_msgs::FlightState::HOVERING && diff.toSec() > 5){
-    BehaviorExecutionController::setTerminationCause(behavior_execution_manager_msgs::BehaviorActivationFinished::GOAL_ACHIEVED);
+    BehaviorExecutionManager::setTerminationCause(behavior_execution_manager_msgs::BehaviorActivationFinished::GOAL_ACHIEVED);
   }
 }
 
@@ -103,7 +109,7 @@ void BehaviorMoveVerticalWithPlatformControl::onActivate()
     distance = config_file["distance"].as<double>();
   }else{
     ROS_ERROR("Behavior move vertical was called without a distance");
-    BehaviorExecutionController::setTerminationCause(behavior_execution_manager_msgs::BehaviorActivationFinished::INTERRUPTED);
+    BehaviorExecutionManager::setTerminationCause(behavior_execution_manager_msgs::BehaviorActivationFinished::INTERRUPTED);
     return;
   }
 
@@ -134,5 +140,3 @@ void BehaviorMoveVerticalWithPlatformControl::onDeactivate()
 void BehaviorMoveVerticalWithPlatformControl::statusCallBack(const aerostack_msgs::FlightState &msg){
   status_msg = msg;
 }
-}
-PLUGINLIB_EXPORT_CLASS(quadrotor_motion_with_platform_control::BehaviorMoveVerticalWithPlatformControl, nodelet::Nodelet)

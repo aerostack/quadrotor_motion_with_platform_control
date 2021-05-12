@@ -30,9 +30,15 @@
 
 #include "../include/behavior_move_at_speed_with_platform_control.h"
 
-namespace quadrotor_motion_with_platform_control
-{
-BehaviorMoveAtSpeedWithPlatformControl::BehaviorMoveAtSpeedWithPlatformControl() : BehaviorExecutionController() { 
+int main(int argc, char** argv){
+  ros::init(argc, argv, ros::this_node::getName());
+  std::cout << "Node: " << ros::this_node::getName() << " started" << std::endl;
+  BehaviorMoveAtSpeedWithPlatformControl behavior;
+  behavior.start();
+  return 0;
+}
+
+BehaviorMoveAtSpeedWithPlatformControl::BehaviorMoveAtSpeedWithPlatformControl() : BehaviorExecutionManager() { 
   setName("move_at_speed_with_platform_control"); 
   setExecutionGoal(ExecutionGoals::KEEP_RUNNING); 
 }
@@ -68,7 +74,7 @@ void BehaviorMoveAtSpeedWithPlatformControl::checkGoal(){}
 
 void BehaviorMoveAtSpeedWithPlatformControl::checkProgress() {
   if (status_msg.state == aerostack_msgs::FlightState::LANDED){
-    BehaviorExecutionController::setTerminationCause(behavior_execution_manager_msgs::BehaviorActivationFinished::WRONG_PROGRESS);
+    BehaviorExecutionManager::setTerminationCause(behavior_execution_manager_msgs::BehaviorActivationFinished::WRONG_PROGRESS);
   }
 }
 
@@ -98,7 +104,7 @@ void BehaviorMoveAtSpeedWithPlatformControl::onActivate()
     direction = config_file["direction"].as<std::string>();
   }else{
     ROS_ERROR("Behavior move at speed was called without a direction");
-    BehaviorExecutionController::setTerminationCause(behavior_execution_manager_msgs::BehaviorActivationFinished::INTERRUPTED);
+    BehaviorExecutionManager::setTerminationCause(behavior_execution_manager_msgs::BehaviorActivationFinished::INTERRUPTED);
     return;
   }
 
@@ -159,5 +165,3 @@ void BehaviorMoveAtSpeedWithPlatformControl::onDeactivate()
 void BehaviorMoveAtSpeedWithPlatformControl::statusCallBack(const aerostack_msgs::FlightState &msg){
   status_msg = msg;
 }
-}
-PLUGINLIB_EXPORT_CLASS(quadrotor_motion_with_platform_control::BehaviorMoveAtSpeedWithPlatformControl, nodelet::Nodelet)

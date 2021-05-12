@@ -26,13 +26,9 @@
         <param name="~motion_reference_pose_topic"         value="$(arg motion_reference_pose_topic)"        type="str" /> 
         <param name="~flight_state_topic"                        value="$(arg flight_state_topic)"                       type="str" /> 
             
-       <node pkg="nodelet" type="nodelet" args="manager" name="quadrotor_motion_with_platform_control_manager" output="screen" />
-       <node pkg="nodelet" type="nodelet" args="load quadrotor_motion_with_platform_control/BehaviorRotateWithPlatformControl quadrotor_motion_with_platform_control_manager"
-        name="behavior_rotate_with_platform_control" output="screen"/>       
-       <node pkg="nodelet" type="nodelet" args="load quadrotor_motion_with_platform_control/BehaviorMoveAtSpeedWithPlatformControl quadrotor_motion_with_platform_control_manager"
-        name="behavior_move_at_speed_with_platform_control" output="screen"/>   
-       <node pkg="nodelet" type="nodelet" args="load quadrotor_motion_with_platform_control/BehaviorMoveVerticalWithPlatformControl quadrotor_motion_with_platform_control_manager"
-        name="behavior_move_vertical_with_platform_control" output="screen"/>                
+       <node name="behavior_rotate_with_platform_control" pkg="quadrotor_motion_with_platform_control"  type="BehaviorRotateWithPlatformControl"  output="screen"/>
+       <node name="behavior_move_at_speed_with_platform_control" pkg="quadrotor_motion_with_platform_control"  type="BehaviorMoveAtSpeedWithPlatformControl"  output="screen"/>
+       <node name="behavior_move_vertical_with_platform_control" pkg="quadrotor_motion_with_platform_control"  type="BehaviorMoveVerticalWithPlatformControl"  output="screen"/>                
   </group>
 </launch>
 

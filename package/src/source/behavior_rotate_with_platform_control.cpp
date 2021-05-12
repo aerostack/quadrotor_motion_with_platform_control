@@ -30,9 +30,15 @@
 
 #include "../include/behavior_rotate_with_platform_control.h"
 
-namespace quadrotor_motion_with_platform_control
-{
-BehaviorRotateWithPlatformControl::BehaviorRotateWithPlatformControl() : BehaviorExecutionController() { 
+int main(int argc, char** argv){
+  ros::init(argc, argv, ros::this_node::getName());
+  std::cout << "Node: " << ros::this_node::getName() << " started" << std::endl;
+  BehaviorRotateWithPlatformControl behavior;
+  behavior.start();
+  return 0;
+}
+
+BehaviorRotateWithPlatformControl::BehaviorRotateWithPlatformControl() : BehaviorExecutionManager() { 
   setName("rotate_with_platform_control"); 
   setExecutionGoal(ExecutionGoals::ACHIEVE_GOAL);
 }
@@ -75,7 +81,7 @@ void BehaviorRotateWithPlatformControl::checkGoal(){
           angle2 = atan2(2.0 * (reference_pose.pose.orientation.z * reference_pose.pose.orientation.w + reference_pose.pose.orientation.x * reference_pose.pose.orientation.y) , 
                               - 1.0 + 2.0 * (reference_pose.pose.orientation.w * reference_pose.pose.orientation.w + reference_pose.pose.orientation.x * reference_pose.pose.orientation.x));    
       } 
-      if (abs(abs(angle2) - abs(current_angle)) < 0.5) BehaviorExecutionController::setTerminationCause(behavior_execution_manager_msgs::BehaviorActivationFinished::GOAL_ACHIEVED);
+      if (abs(abs(angle2) - abs(current_angle)) < 0.5) BehaviorExecutionManager::setTerminationCause(behavior_execution_manager_msgs::BehaviorActivationFinished::GOAL_ACHIEVED);
   }
 }
 
@@ -153,6 +159,3 @@ void BehaviorRotateWithPlatformControl::imuCallBack(const sensor_msgs::Imu &msg)
 void BehaviorRotateWithPlatformControl::statusCallBack(const aerostack_msgs::FlightState &msg){
   status_msg = msg;
 }
-
-}
-PLUGINLIB_EXPORT_CLASS(quadrotor_motion_with_platform_control::BehaviorRotateWithPlatformControl, nodelet::Nodelet)

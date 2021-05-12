@@ -50,13 +50,11 @@
 #include "aerostack_msgs/FlightState.h"
 #include <geometry_msgs/PoseStamped.h>
 // Aerostack libraries
-#include <behavior_execution_controller.h>
 #include <yaml-cpp/yaml.h>
+#include <BehaviorExecutionManager.h>
 
 
-namespace quadrotor_motion_with_platform_control
-{
-class BehaviorMoveVerticalWithPlatformControl : public BehaviorExecutionController
+class BehaviorMoveVerticalWithPlatformControl : public BehaviorExecutionManager
 {
   // Constructor
 public:
@@ -84,7 +82,7 @@ private:
   geometry_msgs::PoseStamped motion_reference_pose;
 
 private:
-  // BehaviorExecutionController
+  // BehaviorExecutionManager
   void onConfigure();
   void onActivate();
   void onDeactivate();
@@ -97,6 +95,6 @@ private:
   // Callbacks
   void statusCallBack(const aerostack_msgs::FlightState &msg);
 };
-}
+
 
 #endif

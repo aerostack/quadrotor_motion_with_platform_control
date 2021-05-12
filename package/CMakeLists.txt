@@ -32,9 +32,8 @@ set(QUADROTOR_MOTION_WITH_PLATFORM_CONTROL_SOURCE_FILES
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
   roscpp
-  nodelet
   std_msgs
-  behavior_execution_controller
+  behavior_execution_manager
   behavior_execution_manager_msgs
   geometry_msgs
   aerostack_msgs
@@ -54,9 +53,8 @@ catkin_package(
   LIBRARIES ${PROJECT_NAME}
   CATKIN_DEPENDS 
   roscpp 
-  nodelet
   std_msgs
-  behavior_execution_controller
+  behavior_execution_manager
   behavior_execution_manager_msgs
   geometry_msgs
   aerostack_msgs
@@ -75,14 +73,18 @@ include_directories(
 )
 
 ## Declare a C++ library
-add_library(quadrotor_motion_with_platform_control
-  src/source/behavior_move_at_speed_with_platform_control.cpp 
-  src/source/behavior_rotate_with_platform_control.cpp
-  src/source/behavior_move_vertical_with_platform_control.cpp   
-)
+add_executable(BehaviorMoveAtSpeedWithPlatformControl ${QUADROTOR_MOTION_WITH_PLATFORM_CONTROL_SOURCE_DIR}/behavior_move_at_speed_with_platform_control.cpp)
+target_link_libraries(BehaviorMoveAtSpeedWithPlatformControl ${catkin_LIBRARIES})
+target_link_libraries(BehaviorMoveAtSpeedWithPlatformControl yaml-cpp)
+add_executable(BehaviorRotateWithPlatformControl ${QUADROTOR_MOTION_WITH_PLATFORM_CONTROL_SOURCE_DIR}/behavior_rotate_with_platform_control.cpp)
+target_link_libraries(BehaviorRotateWithPlatformControl ${catkin_LIBRARIES})
+target_link_libraries(BehaviorRotateWithPlatformControl yaml-cpp)
+add_executable(BehaviorMoveVerticalWithPlatformControl ${QUADROTOR_MOTION_WITH_PLATFORM_CONTROL_SOURCE_DIR}/behavior_move_vertical_with_platform_control.cpp)
+target_link_libraries(BehaviorMoveVerticalWithPlatformControl ${catkin_LIBRARIES})
+target_link_libraries(BehaviorMoveVerticalWithPlatformControl yaml-cpp)
 
-target_link_libraries(quadrotor_motion_with_platform_control ${catkin_LIBRARIES})
-target_link_libraries(quadrotor_motion_with_platform_control yaml-cpp)
 if(catkin_EXPORTED_LIBRARIES)
-  add_dependencies(quadrotor_motion_with_platform_control ${catkin_EXPORTED_LIBRARIES})
+  add_dependencies(BehaviorMoveAtSpeedWithPlatformControl ${catkin_EXPORTED_LIBRARIES})
+  add_dependencies(BehaviorRotateWithPlatformControl ${catkin_EXPORTED_LIBRARIES})
+  add_dependencies(BehaviorMoveVerticalWithPlatformControl ${catkin_EXPORTED_LIBRARIES})
 endif()

@@ -53,15 +53,11 @@
 #include <geometry_msgs/PoseStamped.h>
 #include <aerostack_msgs/FlightActionCommand.h>
 #include "aerostack_msgs/FlightState.h"
-
+#include <BehaviorExecutionManager.h>
 // Aerostack libraries
-#include <behavior_execution_controller.h>
 #include <yaml-cpp/yaml.h>
 
-
-namespace quadrotor_motion_with_platform_control
-{
-class BehaviorRotateWithPlatformControl : public BehaviorExecutionController
+class BehaviorRotateWithPlatformControl : public BehaviorExecutionManager
 {
   // Constructor
 public:
@@ -97,7 +93,7 @@ private:
   double current_angle;
   tf2::Quaternion q_rot;
 private:
-  // BehaviorExecutionController
+  // BehaviorExecutionManager
   void onConfigure();
   void onActivate();
   void onDeactivate();
@@ -112,6 +108,5 @@ public:
   void imuCallBack(const sensor_msgs::Imu &msg);
   void statusCallBack(const aerostack_msgs::FlightState &msg);
 };
-}
 
 #endif

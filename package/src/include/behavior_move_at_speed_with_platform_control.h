@@ -50,13 +50,11 @@
 #include "aerostack_msgs/FlightState.h"
 #include <geometry_msgs/TwistStamped.h>
 // Aerostack libraries
-#include <behavior_execution_controller.h>
 #include <yaml-cpp/yaml.h>
+#include <BehaviorExecutionManager.h>
 
 
-namespace quadrotor_motion_with_platform_control
-{
-class BehaviorMoveAtSpeedWithPlatformControl : public BehaviorExecutionController
+class BehaviorMoveAtSpeedWithPlatformControl : public BehaviorExecutionManager
 {
   // Constructor
 public:
@@ -84,7 +82,7 @@ private:
   geometry_msgs::TwistStamped motion_reference_speed;
 
 private:
-  // BehaviorExecutionController
+  // BehaviorExecutionManager
   void onConfigure();
   void onActivate();
   void onDeactivate();
@@ -97,6 +95,5 @@ private:
   // Callbacks
   void statusCallBack(const aerostack_msgs::FlightState &msg);
 };
-}
 
 #endif
